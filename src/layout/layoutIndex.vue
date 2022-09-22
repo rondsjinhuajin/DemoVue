@@ -26,34 +26,56 @@ const isPhone = () => {
 onMounted(() => {
   isPhone();
 });
+
+const activeRouter = ref("/");
+const routerList = ["/about", "/axiosTest", "/"];
+
+const t = routerList.find((item) => window.location.href.includes(item));
+console.log(t, "t");
+activeRouter.value = t;
+function selectClick(index: any) {
+  activeRouter.value = index;
+}
 </script>
 
 <template>
   <div class="common-layout">
     <el-container>
-      <el-header
-        ><layout-header :isPhoneOrNot="isPhoneOrNot"></layout-header
-      ></el-header>
+      <el-aside width="272px" v-if="!isPhoneOrNot">
+        <div class="logo-class"></div>
+        <el-menu
+          class="el-menu-vertical-demo"
+          background-color="transparent"
+          text-color="#fff"
+          active-text-color="#298DF9"
+          @select="selectClick"
+          router
+          :default-active="activeRouter"
+        >
+          <RouterLink
+            v-for="(item, index) in menu"
+            :key="'menu' + index"
+            :to="item.url"
+          >
+            <el-menu-item :index="item.url">
+              <span :class="`icon icon-${index + 1}`"></span>
+              <span slot="title">{{ item.title }}</span>
+            </el-menu-item>
+          </RouterLink>
+        </el-menu>
+      </el-aside>
+
       <el-container>
-        <el-aside width="150px" v-if="!isPhoneOrNot">
-          <nav class="nav-class">
-            <RouterLink
-              v-for="(item, index) in menu"
-              :key="'menu' + index"
-              :to="item.url"
-              >{{ item.title }}{{ index + 1 }}</RouterLink
-            >
-          </nav>
-        </el-aside>
-        <el-container>
-          <el-main><layout-main></layout-main></el-main>
-          <!-- <el-footer><layout-footer></layout-footer></el-footer> -->
-        </el-container>
+        <el-header
+          ><layout-header :isPhoneOrNot="isPhoneOrNot"></layout-header
+        ></el-header>
+        <el-main><layout-main></layout-main></el-main>
+        <!-- <el-footer><layout-footer></layout-footer></el-footer> -->
       </el-container>
     </el-container>
   </div>
 </template>
-<style>
+<style scoped lang='less'>
 * {
   margin: 0;
   padding: 0;
@@ -86,6 +108,64 @@ onMounted(() => {
 }
 
 .el-aside {
-  background-color: lightslategrey;
+  background-color: #1f263e;
+}
+
+.el-container {
+  height: 100%;
+  width: 100%;
+}
+.logo-class {
+  font-size: 30px;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  width: 100%;
+  height: 88px;
+  background: url(@/assets/images/logo.png) center no-repeat;
+  border-bottom: 1px solid rgba(248, 249, 251, 0.3);
+}
+.icon {
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  margin-right: 11px;
+}
+.el-menu {
+  border: none;
+}
+.icon-1 {
+  background: url(@/assets/images/icon-1.png) center no-repeat;
+}
+.icon-2 {
+  background: url(@/assets/images/icon-2.png) center no-repeat;
+}
+.icon-3 {
+  background: url(@/assets/images/icon-3.png) center no-repeat;
+}
+.el-menu-item {
+  margin: 8px 0;
+}
+.el-menu-item.is-active {
+  background: #303750;
+  position: relative;
+}
+.el-menu-item.is-active::before {
+  content: "";
+  width: 3px;
+  background: #298df9;
+  height: 100%;
+  position: absolute;
+  left: 0;
+}
+.el-menu-item:hover {
+  background: #303750;
+}
+.el-menu-item:hover a {
+  color: #298df9;
+}
+
+a:hover {
+  color: #298df9;
 }
 </style>

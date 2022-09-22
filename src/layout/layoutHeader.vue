@@ -52,10 +52,10 @@ onMounted(() => {});
 .el-header {
   margin: 0;
   padding: 0 !important;
-  height: 35px !important;
+  height: 60px !important;
   background-color: aliceblue;
   text-align: center;
-  line-height: 35px !important;
+  line-height: 60px !important;
   color: #333;
 }
 .common-layout-header {
@@ -77,8 +77,8 @@ onMounted(() => {});
   align-items: center;
 }
 .nav-class1 a {
-  min-height: 35px;
-  line-height: 35px;
+  min-height: 60px;
+  line-height: 60px;
   color: #333;
 }
 .nav-class1 a:hover {

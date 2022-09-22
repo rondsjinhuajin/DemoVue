@@ -1,7 +1,7 @@
 export default [
   {
     url: "/",
-    title: "首页",
+    title: "柱状图饼图联动",
   },
   {
     url: "/about",

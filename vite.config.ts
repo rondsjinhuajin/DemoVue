@@ -13,6 +13,16 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  css: {
+		preprocessorOptions: {
+			less: {
+				modifyVars: {
+					hack: `true`,
+				},
+				javascriptEnabled: true,
+			},
+		},
+	},
   server: {
     // host: "127.0.0.1",
     host: "0.0.0.0",
