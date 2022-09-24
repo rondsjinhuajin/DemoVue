@@ -18,10 +18,10 @@ Mock.mock(RegExp("/postData" + ".*"), "post", function () {
 });
 
 Mock.mock("/userInfo", "get", function () {
-  const datas = { message: "请求成功", code: 0, data: 1 };
+  const datas = { message: "实例请求成功", code: 0, data: 2 };
   return datas;
 });
 Mock.mock("/getToken", "get", function () {
-  const datas = { message: "请求成功", code: 0, data: 2 };
+  const datas = { message: "封装请求成功", code: 0, data: 3 };
   return datas;
 });

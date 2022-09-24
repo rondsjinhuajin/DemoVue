@@ -27,7 +27,7 @@ onMounted(() => {
   isPhone();
 });
 
-const activeRouter = ref("/");
+const activeRouter:any = ref("/");
 const routerList = ["/about", "/axiosTest", "/"];
 
 const t = routerList.find((item) => window.location.href.includes(item));

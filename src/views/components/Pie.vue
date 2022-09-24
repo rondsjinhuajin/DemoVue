@@ -4,13 +4,13 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import * as echarts from "echarts";
 import { watch } from "vue";
 type EChartsOption = echarts.EChartsOption;
 const keyOnly = new Date().getTime();
-let myChart = null;
-let option: EChartsOption;
+let myChart: any = null;
+let option: any;
 const props = defineProps({
   list: Array,
 });
@@ -19,7 +19,7 @@ const drawBarCharts = () => {
   if (option) {
     myChart.dispose(); //释放图表
     myChart = null;
-    let chartDom = document.getElementById("barCharts");
+    let chartDom: any = document.getElementById("barCharts");
     myChart = echarts.init(chartDom);
   }
 
@@ -73,7 +73,7 @@ const drawBarCharts = () => {
   option && myChart.setOption(option);
 };
 const init = () => {
-  let chartDom = document.getElementById("barCharts");
+  let chartDom:any = document.getElementById("barCharts");
   myChart = echarts.init(chartDom);
   drawBarCharts();
 };

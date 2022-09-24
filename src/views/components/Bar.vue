@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, Ref, ref } from "vue";
+import { onMounted, ref } from "vue";
 import Pie from "./Pie.vue";
 import * as echarts from "echarts"; // 全部引入 按需引入 自行百度
 // 模拟数据
@@ -54,8 +54,8 @@ const barList = ref([
 ]);
 // 类型
 type EChartsOption = echarts.EChartsOption;
-let myChart = null; // 初始化
-let option: EChartsOption; // 类型
+let myChart: any = null; // 初始化
+let option: any; // 类型
 // 折线图 visualMap 的 pieces数据
 const visualMapPieces = Array(5) // 背景色
   .fill([])
@@ -70,7 +70,7 @@ const visualMapPieces = Array(5) // 背景色
 const drawBarCharts = (list: any[]) => {
   // drawPieChart("skip", "");
   if (option) {
-    myChart.dispose(); //释放图表
+    // myChart.dispose(); //释放图表
   }
   // 折线图 默认配置
   option = {
@@ -149,42 +149,38 @@ const drawBarCharts = (list: any[]) => {
     ],
   };
   // 折线图 点击事件
-  option && myChart.setOption(option);
+  option && myChart && myChart.setOption(option);
 };
 // 初始化柱状图点击事件
 const BarClick = () => {
   // 折线图 点击事件
-  myChart.getZr().on("click", "series.line", (params) => {
-    defaultClick(params, option, myChart, visualMapPieces, list.value);
-    console.log(params, "params");
-    barChangeList();
-  });
+  myChart &&
+    myChart
+      .getZr()
+      .on(
+        "click",
+        "series.line",
+        (params: { target: any; offsetY: number; offsetX: any }) => {
+          defaultClick(params, option, myChart, visualMapPieces, list.value);
+          console.log(params, "params");
+          barChangeList();
+        }
+      );
 };
 // 点击事件重置柱状图的颜色区域
 function defaultClick(
   params: { target: any; offsetY: number; offsetX: any },
-  option: echarts.EChartsOption,
-  myChart: {
-    setOption: (arg0: {
-      visualMap: {
-        type: string;
-        show: boolean;
-        dimension: number;
-        seriesIndex: number;
-        pieces: any;
-      };
-      series: any;
-    }) => void;
-  },
+  option: any,
+  myChart: any,
   visualMapPieces: any[],
-  list: Ref<{ name: string; total: string }[]> | { total: any }[]
+  list: any[]
 ) {
   // 折线图 点击事件
   console.log(params, "params");
   if (!params.target) {
     return;
   }
-  let areaIndex = 0; // 值域：[0, 4]的正整数
+  let areaIndex: any = 0; // 值域：[0, 4]的正整数
   // 根据Y轴的值 预估区间
   if (params.offsetY >= 78 && params.offsetY < 125) {
     areaIndex = 4;
@@ -217,43 +213,46 @@ function defaultClick(
           : { ...item };
       }),
     },
-    series: option.series.map((item, index) => {
-      // 根据点击区域 画指示线
-      return item.name === "line"
-        ? {
-            ...item,
-            markLine: {
-              silent: true,
-              lineStyle: {
-                type: "dashed",
-                color: "#1890FF",
-              },
-              data: [
-                [
-                  {
-                    lineStyle: { color: "#1890FF", type: "dashed", width: 1 },
-                    x: params.offsetX,
-                    y: params.offsetY,
-                  },
-                  {
-                    label: {
-                      color: "#1890FF",
-                      padding: [0, 15, 0, 0], // 重点在这里，这个地方就是定位
-                      position: "insideEndTop",
-                      formatter: `${
-                        list[areaIndex - 1 < 0 ? 0 : areaIndex - 1].name
-                      }${list[areaIndex - 1 < 0 ? 0 : areaIndex - 1].total}`,
+    series:
+      option &&
+      option.series &&
+      option.series.map((item: { name: string }, index: any) => {
+        // 根据点击区域 画指示线
+        return item.name === "line"
+          ? {
+              ...item,
+              markLine: {
+                silent: true,
+                lineStyle: {
+                  type: "dashed",
+                  color: "#1890FF",
+                },
+                data: [
+                  [
+                    {
+                      lineStyle: { color: "#1890FF", type: "dashed", width: 1 },
+                      x: params.offsetX,
+                      y: params.offsetY,
                     },
-                    lineStyle: { color: "#1890FF", type: "dashed", width: 1 },
-                    x: "98%",
-                    y: params.offsetY,
-                  },
+                    {
+                      label: {
+                        color: "#1890FF",
+                        padding: [0, 15, 0, 0], // 重点在这里，这个地方就是定位
+                        position: "insideEndTop",
+                        formatter: `${
+                          list[areaIndex - 1 < 0 ? 0 : areaIndex - 1].name
+                        }${list[areaIndex - 1 < 0 ? 0 : areaIndex - 1].total}`,
+                      },
+                      lineStyle: { color: "#1890FF", type: "dashed", width: 1 },
+                      x: "98%",
+                      y: params.offsetY,
+                    },
+                  ],
                 ],
-              ],
-            },
-          }
-        : { ...item };
-    }),
+              },
+            }
+          : { ...item };
+      }),
   });
 }
 // 动态获取右侧饼图数据
@@ -262,14 +261,14 @@ function barChangeList() {
   for (let i = 0; i < Math.floor(Math.random() * 10 + 1); i++) {
     temp.push({
       name: "bar数据" + i + 1,
-      value: 10 * (i + 1),
+      value: 10 * (i + 1) + "",
     });
   }
   barList.value = temp;
 }
 // 初始化
 onMounted(() => {
-  const chartDom = document.getElementById("pieCharts");
+  const chartDom: any = document.getElementById("pieCharts");
   myChart = echarts.init(chartDom);
   drawBarCharts(list.value);
   BarClick();

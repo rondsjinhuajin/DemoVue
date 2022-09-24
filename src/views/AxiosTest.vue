@@ -1,11 +1,17 @@
 <template>
   <div class="axios-wrap">
+    <el-button @click="getUrl">get请求</el-button>
+    <el-button @click="postUrl">post请求</el-button>
+    <el-button @click="instanceFun">实例请求</el-button>
+    <el-button @click="httpFun">封装http请求</el-button>
     <div :key="'s' + index" v-for="(item, index) in list" class="list">
       <div>{{ item.id }}</div>
       <div>{{ item.firstName }}{{ item.id }}</div>
       <div>{{ item.name }}</div>
+      <div>{{ item.message }}</div>
+      <div>{{ item.code }}</div>
+      <div>{{ item.data }}</div>
     </div>
-    <el-button>Default</el-button>
   </div>
 </template>
 <script setup lang="ts">
@@ -18,7 +24,8 @@ interface ListModel {
   name: string;
   firstName: string;
 }
-const list = ref<ListModel[]>([]);
+// const list = ref<ListModel[]>([]);
+const list: any = ref<any>();
 async function getUrl() {
   const res = await axios.get("/getData", {
     params: {
@@ -27,7 +34,7 @@ async function getUrl() {
   });
   list.value = res.data.list;
 }
-getUrl();
+
 function postUrl() {
   axios
     .post("/postData", {
@@ -36,12 +43,12 @@ function postUrl() {
     })
     .then(function (response) {
       console.log(response.data.message);
+      list.value = [response.data];
     })
     .catch(function (error) {
       console.log(error);
     });
 }
-postUrl();
 // 发送多个并发请求
 function getUserInfo() {
   return axios.get("/userInfo");
@@ -91,10 +98,20 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+// 实例请求
+function instanceFun() {
+  instance.get("/userInfo").then((res) => {
+    console.log(res, "测试实例请求");
+    list.value = [res.data];
+  });
+}
 // 封装http公共请求 KinHKin
-http.get("/getData").then((res) => {
-  console.log(res, "测试接口类名称");
-});
+function httpFun() {
+  http.get("/getToken").then((res) => {
+    console.log(res, "测试接口类名称");
+    list.value = [res];
+  });
+}
 </script>
 <style>
 .axios-wrap {
