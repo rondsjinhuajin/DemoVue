@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, toRefs } from "vue";
 import type { Ref } from "vue";
 
 import type { TabsPaneContext } from "element-plus";
@@ -33,6 +33,16 @@ function openWin() {
     "_blank"
   );
 }
+const obj = {
+  num: ref(0),
+};
+
+function refClick() {
+  // const { num } = obj;
+  // num.value++;
+  obj.num.value++;
+}
+
 </script>
 <template>
   <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
@@ -42,6 +52,9 @@ function openWin() {
     <el-tab-pane label="ref" name="2">
       <el-button @click="countClick">count++</el-button>
       <div>{{ count }}</div>
+
+      <el-button @click="refClick()">ref自动解包</el-button>
+      <div>{{ obj.num }}</div>
     </el-tab-pane>
     <el-tab-pane label="reactive" name="3">
       <el-button @click="updateFormInline">updateFormInline</el-button>
