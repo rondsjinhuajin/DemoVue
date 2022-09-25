@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, type Ref } from "vue";
 import layoutHeader from "./layoutHeader.vue";
 import layoutMain from "./layoutMain.vue";
 import layoutFooter from "./layoutFooter.vue";
@@ -27,12 +27,12 @@ onMounted(() => {
   isPhone();
 });
 
-const activeRouter:any = ref("/");
-const routerList = ["/about", "/axiosTest", "/"];
-
+const activeRouter: Ref<string | undefined> = ref("/");
+let routerList: string[] = menu.map((x) => x.url);
+routerList.shift();
 const t = routerList.find((item) => window.location.href.includes(item));
 console.log(t, "t");
-activeRouter.value = t;
+activeRouter.value = t || "/";
 function selectClick(index: any) {
   activeRouter.value = index;
 }
@@ -58,7 +58,7 @@ function selectClick(index: any) {
             :to="item.url"
           >
             <el-menu-item :index="item.url">
-              <span :class="`icon icon-${index + 1}`"></span>
+              <span :class="`icon icon-1 icon-${index + 1}`"></span>
               <span slot="title">{{ item.title }}</span>
             </el-menu-item>
           </RouterLink>
@@ -75,7 +75,7 @@ function selectClick(index: any) {
     </el-container>
   </div>
 </template>
-<style scoped lang='less'>
+<style scoped lang="less">
 * {
   margin: 0;
   padding: 0;

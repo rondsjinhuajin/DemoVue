@@ -42,7 +42,7 @@ onMounted(() => {});
           v-for="(item, index) in menu"
           :key="'menu' + index"
           :to="item.url"
-          >{{ item.title }}{{ index + 1 }}</RouterLink
+          >{{ item.title }}</RouterLink
         >
       </nav>
     </div>
@@ -80,6 +80,7 @@ onMounted(() => {});
   min-height: 60px;
   line-height: 60px;
   color: #333;
+  width: 100%;
 }
 .nav-class1 a:hover {
   color: rgb(151, 219, 50);

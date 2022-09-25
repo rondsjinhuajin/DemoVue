@@ -5,12 +5,12 @@
     <el-button @click="instanceFun">实例请求</el-button>
     <el-button @click="httpFun">封装http请求</el-button>
     <div :key="'s' + index" v-for="(item, index) in list" class="list">
-      <div>{{ item.id }}</div>
-      <div>{{ item.firstName }}{{ item.id }}</div>
-      <div>{{ item.name }}</div>
-      <div>{{ item.message }}</div>
-      <div>{{ item.code }}</div>
-      <div>{{ item.data }}</div>
+      <div v-if="item.id">{{ item.id }}</div>
+      <div v-if="item.firstName">{{ item.firstName }}{{ item.firstName }}</div>
+      <div v-if="item.name">{{ item.name }}</div>
+      <div v-if="item.message">{{ item.message }}</div>
+      <div v-if="item.code">{{ item.code }}</div>
+      <div v-if="item.data">{{ item.data }}</div>
     </div>
   </div>
 </template>
