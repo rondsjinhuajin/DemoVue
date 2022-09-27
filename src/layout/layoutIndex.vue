@@ -3,7 +3,7 @@ import { onMounted, ref, type Ref } from "vue";
 import layoutHeader from "./layoutHeader.vue";
 import layoutMain from "./layoutMain.vue";
 import layoutFooter from "./layoutFooter.vue";
-import menu from "./menu";
+import menu from "../router/menu.ts";
 import { RouterLink } from "vue-router";
 
 const isPhoneOrNot = ref(false);
@@ -82,6 +82,9 @@ function selectClick(index: any) {
 }
 .common-layout {
   height: 100vh;
+}
+.el-main {
+  padding: 0;
 }
 .el-container {
   overflow: hidden;
