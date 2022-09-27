@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref,type Ref } from "vue";
 import { ElMessage } from "element-plus";
 import data from "./data.json";
 // const footerList = ref([0, 1, 2, 3, 4, 5, 6]);
-const footerList = ref();
+const footerList:Ref<Array<any> | [any]> = ref([])
 
 const colors = ref([
   "#008B8B",
@@ -20,7 +20,9 @@ const colors = ref([
 ]);
 
 // 数据模拟
-const totalList = ref();
+// const totalList = ref();
+const totalList:Ref<Array<any> | [any]> = ref([])
+
 totalList.value = data.list1;
 function handleClick(
   i: any,
