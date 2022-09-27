@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { Ref, ref, toRaw, watch } from "vue";
+import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import data from "./data.json";
 // const footerList = ref([0, 1, 2, 3, 4, 5, 6]);
-const footerList = ref([]);
+const footerList = ref();
 
 const colors = ref([
   "#008B8B",
@@ -20,7 +20,8 @@ const colors = ref([
 ]);
 
 // 数据模拟
-const totalList = ref(data.list1);
+const totalList = ref();
+totalList.value = data.list1;
 function handleClick(
   i: any,
   k: string | number,
@@ -62,7 +63,7 @@ function handleClick(
       footerList.value = eliminationFunction(footerList.value);
       if (
         !footerList.value.length &&
-        tempList.find((x) => x.one.find((j) => j.oneSub.length === 0))
+        tempList.find((x:any) => x.one.find((j:any) => j.oneSub.length === 0))
       ) {
         // debugger
         ElMessage.closeAll();

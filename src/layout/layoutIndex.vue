@@ -3,7 +3,7 @@ import { onMounted, ref, type Ref } from "vue";
 import layoutHeader from "./layoutHeader.vue";
 import layoutMain from "./layoutMain.vue";
 import layoutFooter from "./layoutFooter.vue";
-import menu from "../router/menu.ts";
+import {menu} from "../router/menu";
 import { RouterLink } from "vue-router";
 
 const isPhoneOrNot = ref(false);
