@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 
-import menu from "./menu";
+import menu from "../router/menu.ts";
 import { RouterLink } from "vue-router";
 const show = ref(false);
 const showPopup = () => {
