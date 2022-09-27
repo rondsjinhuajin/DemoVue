@@ -1,4 +1,4 @@
-<script setup lang='ts'>
+<script setup lang="ts">
 import { Ref, ref, toRaw, watch } from "vue";
 import { ElMessage } from "element-plus";
 import data from "./data.json";
@@ -21,7 +21,14 @@ const colors = ref([
 
 // 数据模拟
 const totalList = ref(data.list1);
-function handleClick(i, k, onei, onek, oneiSub, onekSub) {
+function handleClick(
+  i: any,
+  k: string | number,
+  onei: { oneSub: string | any[] },
+  onek: string | number,
+  oneiSub: number,
+  onekSub: number
+) {
   console.log(i, k, onei, onek, oneiSub, onekSub, "测试");
   // 内层不能点击
   if (onekSub !== onei.oneSub.length - 1) {
@@ -53,17 +60,34 @@ function handleClick(i, k, onei, onek, oneiSub, onekSub) {
   if (footerList.value.length > 2) {
     setTimeout(() => {
       footerList.value = eliminationFunction(footerList.value);
+      if (
+        !footerList.value.length &&
+        tempList.find((x) => x.one.find((j) => j.oneSub.length === 0))
+      ) {
+        // debugger
+        ElMessage.closeAll();
+        ElMessage.success("恭喜您，挑战成功！进入下一关");
+        totalList.value = data.list2;
+        footerList.value = [];
+      }
     }, 100);
   }
 
   console.log(footerList, tempList, "tempList");
-  if (!footerList.value.length) {
-    ElMessage.closeAll();
-    ElMessage.error("恭喜您，挑战成功！点击右上角进入下一关");
-  }
+
+  // if (
+  //   !footerList.value.length &&
+  //   tempList.map((x) => x.one.map((j) => j.oneSub.length === 0))
+  // ) {
+  //   // debugger
+  //   ElMessage.closeAll();
+  //   ElMessage.success("恭喜您，挑战成功！进入下一关");
+  //   totalList.value = data.list2;
+  //   footerList.value = [];
+  // }
 }
 // 消除函数
-function eliminationFunction(list) {
+function eliminationFunction(list: any[]) {
   for (let k = 0; k < list.length - 2; k++) {
     const temp = list;
     const arr = temp.slice(k, k + 3);
@@ -175,7 +199,7 @@ function eliminationFunction(list) {
     </div>
   </div>
 </template>
-<style scoped lang='less'>
+<style scoped lang="less">
 .flex-center {
   display: flex;
   align-items: center;
