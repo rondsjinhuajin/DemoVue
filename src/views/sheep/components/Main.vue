@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, type Ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { useSheepStore } from '@/stores/sheep';
+import { useSheepStore } from "@/stores/sheep";
 import data from "./data.json";
 
 // const footerList = ref([0, 1, 2, 3, 4, 5, 6]);
-const footerList:Ref<Array<any> | [any]> = ref([])
+const footerList: Ref<Array<any> | [any]> = ref([]);
 
-const store = useSheepStore()
+const store = useSheepStore();
 const colors = ref([
   "#008B8B",
   "#00FFFF",
@@ -24,9 +24,9 @@ const colors = ref([
 
 // 数据模拟
 // const totalList = ref();
-const totalList:Ref<Array<any> | [any]> = ref([])
+const totalList: Ref<Array<any> | [any]> = ref([]);
 
-totalList.value = data['list1'];
+totalList.value = data["list1"];
 function handleClick(
   i: any,
   k: string | number,
@@ -43,22 +43,16 @@ function handleClick(
   if (footerList.value.length === 7) {
     ElMessage.closeAll();
 
-    ElMessageBox.alert(
-    '挑战失败，点击确定返回！',
-    'Warning',
-    {
-      confirmButtonText: '确定',
-      type: 'warning',
-      showClose:false
-    }
-  )
-    .then(() => {
-      location.reload()
-    })
-
-   
+    ElMessageBox.alert("挑战失败，点击确定返回！", "Warning", {
+      confirmButtonText: "确定",
+      type: "warning",
+      showClose: false,
+    }).then(() => {
+      location.reload();
+    });
     return false;
   }
+
   const { value } = totalList;
 
   let tempList = JSON.parse(JSON.stringify(value));
@@ -77,19 +71,30 @@ function handleClick(
   }
   footerList.value.push(oneiSub);
   totalList.value = tempList;
+
+  if (footerList.value.length > 0 && !jugeList(tempList)) {
+    ElMessage.closeAll();
+
+    ElMessageBox.alert("挑战失败，点击确定返回！", "Warning", {
+      confirmButtonText: "确定",
+      type: "warning",
+      showClose: false,
+    }).then(() => {
+      location.reload();
+    });
+    return false;
+  }
+
   if (footerList.value.length > 2) {
     setTimeout(() => {
       footerList.value = eliminationFunction(footerList.value);
-      if (
-        !footerList.value.length &&
-        !jugeList(tempList)
-      ) {
+      if (!footerList.value.length && !jugeList(tempList)) {
         // debugger
         ElMessage.closeAll();
         ElMessage.success("恭喜您，挑战成功！进入下一关");
         store.step++;
-        const inStep:string = 'list' + (store.step + 1);
-        totalList.value = data[inStep];
+        const inStep: string = "list" + (store.step + 1);
+        totalList.value = JSON.parse(JSON.stringify(data))[inStep];
         footerList.value = [];
       }
     }, 100);
@@ -110,13 +115,13 @@ function handleClick(
 }
 // 判断是否过关
 function jugeList(list: any[]) {
-    let temp:any = []
-    list.forEach((oeni: { one: any; }) => {
-        oeni.one.forEach((sub: { oneSub: any; }) => {
-            temp = [...temp, ...sub.oneSub]
-        })
+  let temp: any = [];
+  list.forEach((oeni: { one: any }) => {
+    oeni.one.forEach((sub: { oneSub: any }) => {
+      temp = [...temp, ...sub.oneSub];
     });
-    return temp.length
+  });
+  return temp.length;
 }
 
 // 消除函数
