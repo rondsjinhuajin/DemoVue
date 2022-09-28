@@ -72,19 +72,6 @@ function handleClick(
   footerList.value.push(oneiSub);
   totalList.value = tempList;
 
-  if (footerList.value.length > 0 && !jugeList(tempList)) {
-    ElMessage.closeAll();
-
-    ElMessageBox.alert("挑战失败，点击确定返回！", "Warning", {
-      confirmButtonText: "确定",
-      type: "warning",
-      showClose: false,
-    }).then(() => {
-      location.reload();
-    });
-    return false;
-  }
-
   if (footerList.value.length > 2) {
     setTimeout(() => {
       footerList.value = eliminationFunction(footerList.value);
@@ -99,7 +86,20 @@ function handleClick(
       }
     }, 100);
   }
+  setTimeout(()=>{
+    if (footerList.value.length > 0 && !jugeList(tempList)) {
+    ElMessage.closeAll();
 
+    ElMessageBox.alert("挑战失败，点击确定返回！", "Warning", {
+      confirmButtonText: "确定",
+      type: "warning",
+      showClose: false,
+    }).then(() => {
+      location.reload();
+    });
+    return false;
+  }
+  },200)
   console.log(footerList, tempList, "tempList");
 
   // if (
