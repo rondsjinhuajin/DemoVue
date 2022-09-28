@@ -1,7 +1,17 @@
+<script lang='ts' setup>
+import { useSheepStore } from '@/stores/sheep';
+const store = useSheepStore();
+</script>
+
 <template>
   <div class="sheep-header">
+    <div>第{{ store.step + 1 }}关</div>
     <div>
-      <span class="l">羊了个羊🐑vue3版本</span><span style="font-size: 14px;font-family: 'Times New Roman', Times, serif';">（KinHKin）</span>
+      <span class="l">羊了个羊🐑vue3版本</span
+      ><span
+        style="font-size: 14px;font-family: 'Times New Roman', Times, serif';"
+        >（KinHKin）</span
+      >
     </div>
   </div>
 </template>
