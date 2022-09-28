@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref,type Ref } from "vue";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox } from "element-plus";
 import data from "./data.json";
 // const footerList = ref([0, 1, 2, 3, 4, 5, 6]);
 const footerList:Ref<Array<any> | [any]> = ref([])
+import {useSheepStore} from '@/stores/sheep.ts';
 
+const store = useSheepStore()
 const colors = ref([
   "#008B8B",
   "#00FFFF",
@@ -23,7 +25,7 @@ const colors = ref([
 // const totalList = ref();
 const totalList:Ref<Array<any> | [any]> = ref([])
 
-totalList.value = data.list1;
+totalList.value = data['list'+(store.step+1)];
 function handleClick(
   i: any,
   k: string | number,
@@ -39,7 +41,21 @@ function handleClick(
   }
   if (footerList.value.length === 7) {
     ElMessage.closeAll();
-    ElMessage.error("挑战失败！");
+
+    ElMessageBox.alert(
+    '挑战失败，点击确定返回！',
+    'Warning',
+    {
+      confirmButtonText: '确定',
+      type: 'warning',
+      showClose:false
+    }
+  )
+    .then(() => {
+      location.reload()
+    })
+
+   
     return false;
   }
   const { value } = totalList;
@@ -65,12 +81,13 @@ function handleClick(
       footerList.value = eliminationFunction(footerList.value);
       if (
         !footerList.value.length &&
-        tempList.find((x:any) => x.one.find((j:any) => j.oneSub.length === 0))
+        !jugeList(tempList)
       ) {
         // debugger
         ElMessage.closeAll();
         ElMessage.success("恭喜您，挑战成功！进入下一关");
-        totalList.value = data.list2;
+        store.step++;
+        totalList.value = data['list'+(store.step+1)];
         footerList.value = [];
       }
     }, 100);
@@ -89,6 +106,17 @@ function handleClick(
   //   footerList.value = [];
   // }
 }
+// 判断是否过关
+function jugeList(list) {
+    let temp = []
+    list.forEach(element => {
+        element.one.forEach(sub => {
+            temp = [...temp, ...sub.oneSub]
+        })
+    });
+    return temp.length
+}
+
 // 消除函数
 function eliminationFunction(list: any[]) {
   for (let k = 0; k < list.length - 2; k++) {
