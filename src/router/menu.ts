@@ -1,4 +1,9 @@
-export default [
+
+interface menuType {
+  url: string,
+  title: string,
+}
+export const menu:Array<menuType> = [
   {
     url: "/",
     title: "羊了个羊🐑",

@@ -1,7 +1,9 @@
-<script setup lang='ts'>
-import { Ref, ref, toRaw } from "vue";
+<script setup lang="ts">
+import { ref,type Ref } from "vue";
+import { ElMessage } from "element-plus";
+import data from "./data.json";
 // const footerList = ref([0, 1, 2, 3, 4, 5, 6]);
-const footerList = ref([]);
+const footerList:Ref<Array<any> | [any]> = ref([])
 
 const colors = ref([
   "#008B8B",
@@ -16,51 +18,30 @@ const colors = ref([
   "#00CED1",
   "#FF1493",
 ]);
+
 // 数据模拟
-const totalList = ref([
-  {
-    one: [
-      {
-        oneSub: [0, 1, 0, 1],
-        full: true, // 是否全遮挡
-      },
-      {
-        oneSub: [1, 2],
-      },
-      {
-        oneSub: [4],
-      },
-    ],
-  },
-  {
-    one: [
-      {
-        oneSub: [0, 0],
-      },
-      {
-        oneSub: [2, 3],
-      },
-      {
-        oneSub: [4],
-      },
-    ],
-  },
-  {
-    one: [
-      {
-        oneSub: [0, 0],
-      },
-      {
-        oneSub: [2, 3],
-      },
-      {
-        oneSub: [4],
-      },
-    ],
-  },
-]);
-function handleClick(i, k, onei, onek, oneiSub, onekSub) {
+// const totalList = ref();
+const totalList:Ref<Array<any> | [any]> = ref([])
+
+totalList.value = data.list1;
+function handleClick(
+  i: any,
+  k: string | number,
+  onei: { oneSub: string | any[] },
+  onek: string | number,
+  oneiSub: number,
+  onekSub: number
+) {
   console.log(i, k, onei, onek, oneiSub, onekSub, "测试");
+  // 内层不能点击
+  if (onekSub !== onei.oneSub.length - 1) {
+    return false;
+  }
+  if (footerList.value.length === 7) {
+    ElMessage.closeAll();
+    ElMessage.error("挑战失败！");
+    return false;
+  }
   const { value } = totalList;
 
   let tempList = JSON.parse(JSON.stringify(value));
@@ -72,23 +53,44 @@ function handleClick(i, k, onei, onek, oneiSub, onekSub) {
       for (let k = 0; k < oneSub.oneSub.length; k++) {
         if (onekSub === k) {
           const footItem = oneSub.oneSub.splice(onekSub);
-
           break;
         }
       }
     }
   }
   footerList.value.push(oneiSub);
+  totalList.value = tempList;
   if (footerList.value.length > 2) {
     setTimeout(() => {
-      footerList.value = cliceSplit(footerList.value);
-    }, 500);
+      footerList.value = eliminationFunction(footerList.value);
+      if (
+        !footerList.value.length &&
+        tempList.find((x:any) => x.one.find((j:any) => j.oneSub.length === 0))
+      ) {
+        // debugger
+        ElMessage.closeAll();
+        ElMessage.success("恭喜您，挑战成功！进入下一关");
+        totalList.value = data.list2;
+        footerList.value = [];
+      }
+    }, 100);
   }
-  totalList.value = tempList;
-  console.log(footerList, tempList, "tempList");
-}
 
-function cliceSplit(list) {
+  console.log(footerList, tempList, "tempList");
+
+  // if (
+  //   !footerList.value.length &&
+  //   tempList.map((x) => x.one.map((j) => j.oneSub.length === 0))
+  // ) {
+  //   // debugger
+  //   ElMessage.closeAll();
+  //   ElMessage.success("恭喜您，挑战成功！进入下一关");
+  //   totalList.value = data.list2;
+  //   footerList.value = [];
+  // }
+}
+// 消除函数
+function eliminationFunction(list: any[]) {
   for (let k = 0; k < list.length - 2; k++) {
     const temp = list;
     const arr = temp.slice(k, k + 3);
@@ -200,7 +202,7 @@ function cliceSplit(list) {
     </div>
   </div>
 </template>
-<style scoped lang='less'>
+<style scoped lang="less">
 .flex-center {
   display: flex;
   align-items: center;

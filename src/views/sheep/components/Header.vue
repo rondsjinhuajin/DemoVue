@@ -1,10 +1,11 @@
-
 <template>
   <div class="sheep-header">
-    <div><span>羊了个羊🐑</span>（KinHKin）</div>
+    <div>
+      <span class="l">羊了个羊🐑vue3版本</span><span style="font-size: 14px;font-family: 'Times New Roman', Times, serif';">（KinHKin）</span>
+    </div>
   </div>
 </template>
-<style scoped lang='less'>
+<style scoped lang="less">
 .flex-center {
   display: flex;
   align-items: center;
@@ -18,7 +19,7 @@
   border-bottom: 1px solid #1d9614;
   padding-bottom: 1rem;
   margin-bottom: 2rem;
-  div span {
+  div .l {
     background-image: -webkit-linear-gradient(
       left,
       #1d9614,
