@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref,type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { useSheepStore } from '@/stores/sheep';
 import data from "./data.json";
+
 // const footerList = ref([0, 1, 2, 3, 4, 5, 6]);
 const footerList:Ref<Array<any> | [any]> = ref([])
-import { useSheepStore } from '@/stores/sheep';
 
 const store = useSheepStore()
 const colors = ref([
