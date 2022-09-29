@@ -1,5 +1,5 @@
 <script lang='ts' setup>
-import { useSheepStore } from '@/stores/sheep';
+import { useSheepStore } from "@/stores/sheep";
 const store = useSheepStore();
 </script>
 
@@ -33,7 +33,7 @@ const store = useSheepStore();
     background-image: -webkit-linear-gradient(
       left,
       #1d9614,
-      #333 25%,
+      #fff 25%,
       #666 50%,
       #e6d205 75%,
       #fff

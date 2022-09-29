@@ -8,11 +8,13 @@ import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import { Popup } from "vant";
+import VueKinesis from "vue-kinesis";
 // 2. 引入组件样式
 import "vant/lib/index.css";
 import "./assets/main.css";
 
 const app = createApp(App);
+app.use(VueKinesis);
 app.use(ElementPlus);
 app.use(Popup);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
